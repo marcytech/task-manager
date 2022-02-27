@@ -32,7 +32,7 @@
             padding:0 15px;
             border-radius:5px;
             border:0;
-            background:#f00;
+            background:#fff;
             color:#666;
         }
         .ctx-content button {

@@ -6,7 +6,7 @@
   "precise-watcher": {
     "src": [
       {
-        "pattern": ["./src/*/"],
+        "pattern": ["./src/**/"],
         "on": "change",
         "run": [  
           {
