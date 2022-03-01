@@ -1,9 +1,10 @@
-    export const appCreateTask = ({on}) => {
+    export const appCreateTask = () => {
 
     const fnDigitar = () => console.log('digitou...')
 
-    const events = () => {
-        on('onkeyup', '#task', fnDigitar)
+    const events = ({ on, queryOnce }) => {
+        const inputTask = queryOnce('#task')
+        on('onkeyup', [inputTask], fnDigitar)
     }
 
 

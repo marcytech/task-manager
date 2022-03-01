@@ -1,11 +1,21 @@
 export const domFactory = (context) => {
 
-    const on = (eventName, selector, handler) => {
-        const element = context.querySelector(selector)
-        element[eventName] = handler
+    const on = (eventName, elements, handler) => {
+       elements.forEach(element => {
+           element[eventName] = handler
+       })
+    }
+
+    const queryOnce = (selector) => {
+        return context.querySelector(selector)
+    }
+    const queryAll = (selector) => {
+        return Array.from ( context.querySelectorAll(selector))
     }
 
     return {
-        on
+        on,
+        queryOnce,
+        queryAll
     }
 }

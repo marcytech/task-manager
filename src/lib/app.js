@@ -8,10 +8,8 @@ export const createApp = (selector, factories) => {
 
     const selector = createSelector(factory.name)
     const componetElement = element ? element : createElement(selector)
-    const dom = domFactory(componetElement)
-
     const contextId = uuid(selector)
-    const component = factory(dom)
+    const component = factory()
     component.element = componetElement
     component.selector = selector
     component.contextId = contextId
@@ -45,7 +43,8 @@ export const createApp = (selector, factories) => {
   const bindEvents = (component) => {
     if(!component.hasOwnProperty('events')) return
     if(typeof component.events !== 'function') return
-    component.events()
+    const dom = domFactory(component.element)
+    component.events(dom)
   }
 
   const renderChildren = (parentComponent) => {
@@ -70,6 +69,7 @@ export const createApp = (selector, factories) => {
     const { template, contextId } = component
     component.element.innerHTML = applyContext(template(), contextId)
     if(!parentElement) appElement.append(component.element)
+
     bindStyles(component)
     bindEvents(component)
     renderChildren(component)
