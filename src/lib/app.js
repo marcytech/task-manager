@@ -1,13 +1,18 @@
-import { uuid } from "./uuid.js"
+import { uuid } from "./uuid"
+import { domFactory } from "./domFactory"
 
 export const createApp = (selector, factories) => {
   const appElement = document.querySelector(selector)
 
   const createComponent = (factory, element = null) => {
+
     const selector = createSelector(factory.name)
+    const componetElement = element ? element : createElement(selector)
+    const dom = domFactory(componetElement)
+
     const contextId = uuid(selector)
-    const component = factory()
-    component.element = element ? element : createElement(selector)
+    const component = factory(dom)
+    component.element = componetElement
     component.selector = selector
     component.contextId = contextId
 
@@ -37,6 +42,12 @@ export const createApp = (selector, factories) => {
     headElement.append(styleElement)
   }
 
+  const bindEvents = (component) => {
+    if(!component.hasOwnProperty('events')) return
+    if(typeof component.events !== 'function') return
+    component.events()
+  }
+
   const renderChildren = (parentComponent) => {
     const childrenExists = parentComponent.hasOwnProperty("children") &&
       typeof parentComponent.children === "function"
@@ -60,6 +71,7 @@ export const createApp = (selector, factories) => {
     component.element.innerHTML = applyContext(template(), contextId)
     if(!parentElement) appElement.append(component.element)
     bindStyles(component)
+    bindEvents(component)
     renderChildren(component)
   }
 

@@ -1,10 +1,17 @@
- export const appCreateTask = () => {
+    export const appCreateTask = ({on}) => {
+
+    const fnDigitar = () => console.log('digitou...')
+
+    const events = () => {
+        on('onkeyup', '#task', fnDigitar)
+    }
+
 
     const template = () => /*html*/`
         <div class="ctx-content">
             <label>
                 <span>Tarefa</span>
-                <input type="text">
+                <input type="text" id="task">
             </label> 
             <button>Criar</button>
         </div>
@@ -50,5 +57,5 @@
         }
     `
 
-    return { template, styles }
+    return { template, styles, events }
 }
