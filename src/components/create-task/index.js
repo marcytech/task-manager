@@ -4,7 +4,7 @@
 
     const events = ({ on, queryOnce }) => {
         const inputTask = queryOnce('#task')
-        on('onkeyup', [inputTask], fnDigitar)
+        on('onkeyup', inputTask, fnDigitar)
     }
 
 
