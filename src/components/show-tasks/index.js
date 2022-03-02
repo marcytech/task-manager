@@ -1,11 +1,9 @@
-export const appShowTasks = () => {
-         
-    const tasks = [
-        {id: 1, description: 'Criar pagina home'},
-        {id: 2, description: 'Criar cabeçalho da home'},
-        {id: 3, description: 'Criar rodape da home'}
-    ]
+import { state } from '../../store/tasks.observer'
 
+export const appShowTasks = () => {
+
+    const { tasks } = state.get()
+         
     const fnConcluir = () => {
         console.log('concluir')
     }
@@ -34,11 +32,11 @@ export const appShowTasks = () => {
         </li>
     `
 
-    const template = () => /*html*/`
+    const template = ({ state }) => /*html*/`
         <div class="ctx-content">
             <ul>
               ${
-                  tasks.map( task => li(task)).join('')
+                  state.tasks.map( task => li(task)).join('')
               }
             </ul>
         </div>
@@ -93,5 +91,5 @@ export const appShowTasks = () => {
            color:#1a654d;
         }
     `
-    return { template, styles, events }
+    return { template, styles, events, state }
 }

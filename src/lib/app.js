@@ -4,6 +4,18 @@ import { domFactory } from "./domFactory"
 export const createApp = (selector, factories) => {
   const appElement = document.querySelector(selector)
 
+  const watchState = (component) => {
+    const hasState = component.hasOwnProperty('state') && 
+      typeof component.state.on === 'function'
+
+    if(!hasState) return
+
+    component.state.on((payload) => {
+      const parentElement = component.element.parentElement
+      render(component, parentElement, payload)
+    })
+  }
+
   const createComponent = (factory, element = null) => {
 
     const selector = createSelector(factory.name)
@@ -14,6 +26,7 @@ export const createApp = (selector, factories) => {
     component.selector = selector
     component.contextId = contextId
 
+    watchState(component)
     return component
   }
 
@@ -60,14 +73,16 @@ export const createApp = (selector, factories) => {
          const selector = createSelector( key )
          const childElement = parentComponent.element.querySelector( selector )
          const component = createComponent( childrenFactories[key], childElement)
-         render( component, parentComponent.element)
+         const state = component?.state?.get() || {}
+         render( component, parentComponent.element, state)
 
      }
   }
 
-  const render = (component, parentElement = null) => {
+  const render = (component, parentElement = null, payload = {}) => {
     const { template, contextId } = component
-    component.element.innerHTML = applyContext(template(), contextId)
+    const state = { ...payload }
+    component.element.innerHTML = applyContext(template({ state }), contextId)
     if(!parentElement) appElement.append(component.element)
 
     bindStyles(component)
@@ -78,7 +93,8 @@ export const createApp = (selector, factories) => {
   const init = () => {
     for (let key in factories) {
       const component = createComponent(factories[key])
-      render(component)
+      const state = component?.state?.get() || {}
+      render(component, null, state)
     }
   }
 

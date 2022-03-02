@@ -1,6 +1,6 @@
 export const domFactory = (context) => {
 
-    const on = (eventName, elements, handler) => {
+    const on = (eventName, target, handler) => {
 
         const elements = Array.isArray(target) ? target : [target]
 
