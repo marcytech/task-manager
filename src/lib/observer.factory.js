@@ -12,18 +12,14 @@ export const observerFactory = (value) => {
 	}
 
 	const on = (handler) => {
-
 		if ((typeof handler) !== 'function') {
 			throw new Error('Handler is not a function and must be.')
 		}
 
 		if(_handlerExists(handler)) return handler
 
-
 		_handlers = [..._handlers, handler];
 		return handler
-
-
 	}
 
 	const off = (targetHandler) => {
