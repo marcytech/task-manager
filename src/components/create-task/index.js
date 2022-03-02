@@ -1,15 +1,53 @@
- export const appCreateTask = () => {
+import { state } from "../../store/tasks.observer"
 
-    const template = () => /*html*/`
+export const appCreateTask = () => {
+
+    let description = ''
+
+  const updateDescription = ({ value }) =>{
+    description = value
+  }
+
+  const createId = () => {
+      const { tasks } = state.get()
+      return tasks.length + 1
+  }
+
+  const clearTextField = (textField) => {
+     textField.value = '' 
+  }
+
+  const createTask = () => {
+    const id = createId()
+    const { tasks: oldTasks } = state.get()
+    const newTask = { id, description }
+    const tasks = [...oldTasks, newTask]
+    state.set({ tasks })
+  }
+
+
+  const events = ({ on, queryOnce }) => {
+    const textField = queryOnce("#task")
+    on("onkeyup", textField, ({ target }) => updateDescription(target))
+
+
+    const buttonCreateTask = queryOnce('[event-click=createTask]')
+    on('onclick', buttonCreateTask, () => {
+        createTask()
+        clearTextField(textField)
+    })
+  }
+
+  const template = () => /*html*/ `
         <div class="ctx-content">
             <label>
                 <span>Tarefa</span>
-                <input type="text">
+                <input type="text" id="task">
             </label> 
-            <button>Criar</button>
+            <button event-click="createTask">Criar</button>
         </div>
     `
-    const styles = (root) => /*css*/`
+  const styles = (root) => /*css*/ `
         ${root},
         .ctx-content{
             display:flex;
@@ -50,5 +88,5 @@
         }
     `
 
-    return { template, styles }
+  return { template, styles, events }
 }

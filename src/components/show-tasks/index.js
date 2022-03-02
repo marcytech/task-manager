@@ -1,29 +1,42 @@
+import { state } from '../../store/tasks.observer'
+
 export const appShowTasks = () => {
+
+    const { tasks } = state.get()
          
-    const tasks = [
-        {id: 1, description: 'Criar pagina home'},
-        {id: 2, description: 'Criar cabeçalho da home'},
-        {id: 3, description: 'Criar rodape da home'}
-    ]
+    const fnConcluir = () => {
+        console.log('concluir')
+    }
+    const fnRemover = () => {
+        console.log('remover')
+    }
       
+    const events = ({ on, queryAll }) => {
+         
+        const btnConcluir = queryAll('[event-click=fnConcluir]')
+        const btnRemover = queryAll('[event-click=fnRemover]')
+
+        on('onclick', btnConcluir, fnConcluir)
+        on('onclick', btnRemover, fnRemover)
+    }
 
     const li = (task) => /*html*/`
 
         <li data-task-id="${task.id}">
              ${task.description}
              <span>
-                <button class=" ctx-btn ctx-btn-done ">Concluir</button>
-                <button class="  ctx-btn ctx-btn-remove">Remover</button>
+                <button class=" ctx-btn ctx-btn-done" event-click="fnConcluir">Concluir</button>
+                <button class="  ctx-btn ctx-btn-remove" event-click="fnRemover">Remover</button>
              </span>
              
         </li>
     `
 
-    const template = () => /*html*/`
+    const template = ({ state }) => /*html*/`
         <div class="ctx-content">
             <ul>
               ${
-                  tasks.map( task => li(task)).join('')
+                  state.tasks.map( task => li(task)).join('')
               }
             </ul>
         </div>
@@ -78,5 +91,5 @@ export const appShowTasks = () => {
            color:#1a654d;
         }
     `
-    return { template, styles }
+    return { template, styles, events, state }
 }
