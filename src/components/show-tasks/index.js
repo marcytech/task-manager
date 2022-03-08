@@ -28,14 +28,14 @@ export const appShowTasks = () => {
         })
     }
          
-    const fnConcluir = ({target}) => {
+    const onDone = ({target}) => {
         const {dataset} = target.closest('li')
         const {taskId} = dataset
 
         setTaskAsDone(parseInt(taskId))
     }
     
-    const fnRemover = ({ target}) => {
+    const onRemover = ({ target}) => {
         const {  dataset } = target.closest('li')
         const { taskId } = dataset
 
@@ -44,11 +44,11 @@ export const appShowTasks = () => {
       
     const events = ({ on, queryAll }) => {
          
-        const btnConcluir = queryAll('[event-click=fnConcluir]')
-        const btnRemover = queryAll('[event-click=fnRemover]')
+        const btnConcluir = queryAll('[event-click=onDone]')
+        const btnRemover = queryAll('[event-click=onRemove]')
 
-        on('onclick', btnConcluir, fnConcluir)
-        on('onclick', btnRemover, fnRemover)
+        on('onclick', btnConcluir, onDone)
+        on('onclick', btnRemover, onRemover)
     }
 
     const li = (task) => /*html*/`
@@ -56,8 +56,8 @@ export const appShowTasks = () => {
         <li data-task-id="${task.id}" class="${task.done ? 'ctx-done' : '' }">
              ${task.description}
              <span>
-                <button class=" ctx-btn ctx-btn-done" event-click="fnConcluir">Concluir</button>
-                <button class="  ctx-btn ctx-btn-remove" event-click="fnRemover">Remover</button>
+                <button class=" ctx-btn ctx-btn-done" event-click="onDone">Concluir</button>
+                <button class="  ctx-btn ctx-btn-remove" event-click="onRemove">Remover</button>
              </span>
              
         </li>
