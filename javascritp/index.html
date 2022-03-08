@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Novo Projeto</title>
+  
+</head>
+<body>
+
+   <form  id="formCadastro"action="gravarDados.html">
+        <div>
+            <label>
+                Nome
+                <input type="text" name="nome">
+                <span class="error"></span>
+            </label>
+        </div>
+        <div>
+            <label>
+                Email
+                <input type="text" name="email">
+                <span class="error"></span>
+            </label>
+        </div>
+        <div>
+            <label>
+                Cidade
+                <select name="cidade">
+                <option value="">--Selecione--</option>
+                <option value="sao paulo">São Paulo</option>
+                <option value="rio de janeiro">Rio de Janeiro</option>
+                <option value="belo horizonte">Belo Horizonte</option>
+                </select>
+                <span class="error"></span>
+            </label>
+
+            <button type="submit">Cadastrar</button>
+        </div>
+   </form>
+    <script src="./script.js"></script>
+</body>
+</html>

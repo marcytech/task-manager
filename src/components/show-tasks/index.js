@@ -3,12 +3,43 @@ import { state } from '../../store/tasks.observer'
 export const appShowTasks = () => {
 
     const { tasks } = state.get()
-         
-    const fnConcluir = () => {
-        console.log('concluir')
+
+    const sortById = ( currentTask, nexTask) => currentTask.id - nexTask.id
+
+    const removeTask = (taskId) => {
+        const { tasks } = state.get()
+        const newTaskList = tasks.filter( task => task.id !== taskId)
+        state.set({
+            tasks: newTaskList
+        })
     }
-    const fnRemover = () => {
-        console.log('remover')
+
+                                                                                  
+    const setTaskAsDone =(taskId) => {
+        const { tasks } = state.get()
+        const taskToUpdate = tasks.find( task => task.id === taskId)
+        const updatedTask = { ...taskToUpdate, done:true }
+        const newTaskList = tasks.filter( task => task.id !== taskId)
+
+        const orderedTaskList = [ ...newTaskList, updatedTask ]
+
+        state.set({
+            tasks: orderedTaskList.sort(sortById)
+        })
+    }
+         
+    const fnConcluir = ({target}) => {
+        const {dataset} = target.closest('li')
+        const {taskId} = dataset
+
+        setTaskAsDone(parseInt(taskId))
+    }
+    
+    const fnRemover = ({ target}) => {
+        const {  dataset } = target.closest('li')
+        const { taskId } = dataset
+
+        removeTask(+taskId)
     }
       
     const events = ({ on, queryAll }) => {
@@ -22,7 +53,7 @@ export const appShowTasks = () => {
 
     const li = (task) => /*html*/`
 
-        <li data-task-id="${task.id}">
+        <li data-task-id="${task.id}" class="${task.done ? 'ctx-done' : '' }">
              ${task.description}
              <span>
                 <button class=" ctx-btn ctx-btn-done" event-click="fnConcluir">Concluir</button>
@@ -68,6 +99,9 @@ export const appShowTasks = () => {
             background:#f1f1f1;
             margin-bottom: .5rem;
             padding:1rem;
+        }
+        .ctx-content .ctx-done {
+            background: #e0ffe0 !important;
         }
 
         .ctx-btn {

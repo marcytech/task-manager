@@ -1,0 +1,9 @@
+div {
+    margin: 20px 0;
+}
+.inputError{
+    border: 1px solid red;
+}
+.error{
+    color:red;
+}
